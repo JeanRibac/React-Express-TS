@@ -7,7 +7,6 @@ import SignUp from "./components/SignUp/SignUp.component";
 import User from "./pages/User/User.page";
 import PrivateRoute from "./components/PrivateRoute/PrivateRoute.hoc";
 
-// const history = createBrowserHistory();
 function Routes() {
   return (
     <BrowserRouter>

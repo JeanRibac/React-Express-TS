@@ -11,23 +11,23 @@ interface JWT {
   iat: number;
 }
 
-const authService = new AuthService();
+
 if (localStorage.token) {
   // Set auth token header auth
-  const token = authService.loadAccessToken()
+  const token = AuthService.loadAccessToken()
   //@ts-ignore
-  authService.saveAccessToken(token);
+  AuthService.saveAccessToken(token);
   // // Decode token and get user info and exp
   //@ts-ignore
-  const decoded: JWT = authService.decodeToken(token);
+  const decoded: JWT = AuthService.decodeToken(token);
   // // Set user and isAuthenticated
   //@ts-ignore
-  store.dispatch(authService.setUser(decoded.email));
+  AuthService.setUser(decoded.email);
   // // Check for expired token
   const currentTime = Date.now() / 1000; // in milliseconds
   if (decoded.exp < currentTime) {
     // Logout user
-    authService.logOut(store.dispatch); // Redirect to login
+    AuthService.logOut(); // Redirect to login
   }
 }
 function App() {

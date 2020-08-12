@@ -1,8 +1,9 @@
 
 import BaseHttpService from '../services/http.service';
-import { Dispatch, AnyAction, Action } from 'redux';
-import { GET_ERRORS, SET_CURRENT_USER, USER_LOADING } from './auth.types';
+import { SET_CURRENT_USER, USER_LOADING } from './auth.types';
 import jwt_decode from 'jwt-decode';
+// import store from '../store';
+
 
 interface I_LoginData {
   email: string,
@@ -18,43 +19,44 @@ interface I_Decoded {
 interface ResponseData {
   data: {}
 }
-export default class AuthService extends BaseHttpService {
-  register = (userData: I_RegisterData, history: any) => async (dispatch: Dispatch<AnyAction>) => {
+class AuthService extends BaseHttpService {
+
+  register = async (userData: I_RegisterData) => {
     try {
       await this.post(`auth/register`, userData);
-      history.pushState("/login")
     } catch (err) {
-      dispatch(this.setErrors(err))
+      // dispatch(this.setErrors(err))
     }
   }
-  login = (loginData: I_LoginData) => async (dispatch: Dispatch<AnyAction>) => {
+  login = async (loginData: I_LoginData) => {
     try {
       const res = await this.post(`auth/login`, loginData);
       //@ts-ignore
       this.saveAccessToken(res.data.token);
       //@ts-ignore
       const decoded: I_Decoded = this.decodeToken(res.data.token);
-      dispatch(this.setCurrentUser(decoded.email));
+      this.setUser(decoded.email);
     } catch (err) {
-      dispatch(this.setErrors(err))
+      // dispatch(this.setErrors(err))
     }
   }
-  getUserDetails = async (dispatch: Dispatch<Action>) => {
+  getUserDetails = async () => {
     try {
       //@ts-ignore
       const user: ResponseData = await this.get(`auth/user-details`);
       return user.data;
     } catch (err) {
-      return dispatch(this.setErrors(err))
+      // return dispatch(this.setErrors(err))
+      return null
     }
   }
-  logOut = (dispatch: Dispatch<AnyAction>) => {
+  logOut = () => {
     this.removeAccessToken();
-    dispatch(this.setCurrentUser({}));
+    this.dispatch(this.setCurrentUser({}));
   }
 
-  setUser = (data: any) => (dispatch: Dispatch<AnyAction>) => {
-    dispatch(this.setCurrentUser(data));
+  setUser = (data: any) => {
+    this.dispatch(this.setCurrentUser(data));
   }
 
   private setCurrentUser = (decoded: any) => {
@@ -68,16 +70,11 @@ export default class AuthService extends BaseHttpService {
     return jwt_decode(token);
   }
 
-  setErrors = (err: any) => {
-    return {
-      type: GET_ERRORS,
-      payload: err.response.data
-    };
-  };
-
   setUserLoading = () => {
     return {
       type: USER_LOADING
     };
   };
 }
+
+export default new AuthService();

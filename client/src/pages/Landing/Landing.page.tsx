@@ -17,7 +17,6 @@ interface User {
 }
 interface Props { }
 
-const authService = new AuthService();
 
 const Landing: React.FC<Props> = () => {
   const dispatch = useDispatch();
@@ -27,11 +26,11 @@ const Landing: React.FC<Props> = () => {
 
   const onLogout = (e: SyntheticEvent) => {
     e.preventDefault();
-    authService.logOut(dispatch);
+    AuthService.logOut(dispatch);
   };
 
   useEffect(() => {
-    const userInfo = authService.getUserDetails(dispatch);
+    const userInfo = AuthService.getUserDetails(dispatch);
     setUser(userInfo);
   }, []);
 

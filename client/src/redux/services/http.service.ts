@@ -1,8 +1,11 @@
 import axios, { AxiosResponse } from 'axios';
+import { GET_ERRORS } from '../auth/auth.types';
+import store from '../store';
 
 export default class BaseHttpService {
-  BASE_URL = '/api';
-  _accessToken = ""
+  protected BASE_URL = '/api';
+  protected _accessToken = ""
+  protected dispatch = store.dispatch;
 
   async get(endpoint: string, options = {}) {
     //add to the options object the auth token with the _getCommonOptions()
@@ -11,11 +14,14 @@ export default class BaseHttpService {
       .catch(error => this._handleHttpError(error));
   }
 
-  async post(endpoint: string, data = {}, options = {}): Promise<void | AxiosResponse<any>> {
+  async post(endpoint: string, data = {}, options = {}) {
     Object.assign(options, this._getCommonOptions());
-    const result = await axios.post(`${this.BASE_URL}/${endpoint}`, data, options)
-      .catch(error => this._handleHttpError(error));
-    return result;
+    try {
+      const result = await axios.post(`${this.BASE_URL}/${endpoint}`, data, options)
+      return result;
+    } catch (error) {
+      return this._handleHttpError(error)
+    }
   }
 
   async delete(endpoint: string, options = {}) {
@@ -30,14 +36,15 @@ export default class BaseHttpService {
       .catch(error => this._handleHttpError(error));
   }
 
-  _handleHttpError(error: { response: { data: { statusCode: any; }; }; }) {
-    const { statusCode } = error.response.data;
+  _handleHttpError(error: { response: { data: {}; }; }) {
+    const { data } = error.response;
     // 401 request has been made with wrong credentials
-    if (statusCode !== 401) {
-      throw error;
-    } else {
-      console.log(error)
-    }
+    // if (status !== 401) {
+    //   this.setErrors(data)
+    // } else {
+    //   console.log(error)
+    // }
+    return store.dispatch(this.setErrors(data))
   }
 
   _getCommonOptions() {
@@ -50,6 +57,13 @@ export default class BaseHttpService {
     };
   }
 
+  setErrors = (err: any) => {
+    return {
+      type: GET_ERRORS,
+      payload: err
+    };
+  };
+
   setAccessToken(accessToken: any) {
     return this._accessToken = accessToken
   }
@@ -59,11 +73,12 @@ export default class BaseHttpService {
   }
 
   saveAccessToken(token: string) {
-    this.setAccessToken(token);
     if (token) {
+      this.setAccessToken(token);
       this.setAuthToken(token)
       return localStorage.setItem('token', token);
     }
+    return null
   }
 
   setAuthToken = (token: string | null) => {
@@ -84,7 +99,7 @@ export default class BaseHttpService {
 
   removeAccessToken() {
     localStorage.removeItem('token');
-    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
+    document.cookie = "token=; expires=Thu, 01 Jan 1970 00:00:00 UTC";
     this.setAuthToken(null)
   }
 }

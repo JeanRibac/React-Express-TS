@@ -1,4 +1,4 @@
-import { Model, model, Document, Schema} from "mongoose";
+import { Model, model, Document, Schema } from "mongoose";
 
 export const UserSchema = new Schema({
     // postings: [{type: Schema.Types.ObjectId, ref: "Posting"}],
@@ -11,26 +11,26 @@ export const UserSchema = new Schema({
         type: String,
         required: false,
     },
-    fullName:{
+    fullName: {
         type: String, required: false
     },
-    phone:{
+    phone: {
         type: String,
         required: false,
     },
-    address:{
+    address: {
         type: String,
         required: false,
     },
-    city:{
+    city: {
         type: String,
         required: false,
     },
-    descriere:{
+    descriere: {
         type: String,
         required: false,
     },
-    profilePicture:{
+    profilePicture: {
         public_id: String,
         secure_url: String
     },

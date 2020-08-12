@@ -53,11 +53,10 @@ const useStyles = makeStyles((theme) => ({
     margin: theme.spacing(3, 0, 2),
   },
 }));
-const authService = new AuthService();
 
 export default function SignIn() {
-  const dispatch = useDispatch();
   const history = useHistory();
+  const dispatch = useDispatch()
   //@ts-ignore
   const auth: Auth = useSelector((state) => state.auth);
   //@ts-ignore
@@ -78,10 +77,10 @@ export default function SignIn() {
     // return () => {}
   }, [auth]);
 
-  const onSubmit = (e: SyntheticEvent) => {
+  const onSubmit = async (e: SyntheticEvent) => {
     e.preventDefault();
     const newUser = { email, password };
-    dispatch(authService.login(newUser));
+    AuthService.login(newUser);
   };
 
   return (
