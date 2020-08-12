@@ -4,10 +4,10 @@ import AuthService from "src/redux/auth/auth.services";
 import { NotLogged } from "./NotLogged.component";
 import { Logged } from "./Logged.component";
 import { Props } from "src/redux/Interfaces";
+import { Link } from "react-router-dom";
 
 
 const Landing: React.FC<Props> = () => {
-  const dispatch = useDispatch();
   //@ts-ignore
   const auth: Auth = useSelector((state) => state.auth);
   const [user, setUser] = useState({});
@@ -18,10 +18,14 @@ const Landing: React.FC<Props> = () => {
   };
 
   //@ts-ignore
-  useEffect(async () => {
-    const userInfo = await AuthService.getUserDetails();
-    //@ts-ignore
-    setUser(userInfo);
+  useEffect(() => {
+    (async function () {
+      if (auth.isAuthenticated) {
+        const userInfo = await AuthService.getUserDetails();
+        //@ts-ignore
+        setUser(userInfo);
+      }
+    }())
   }, []);
 
   return (

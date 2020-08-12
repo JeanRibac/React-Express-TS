@@ -25,7 +25,7 @@ class AuthService extends BaseHttpService {
     try {
       //@ts-ignore
       const user: I_ResponseData = await this.get(`auth/user-details`);
-      this.setUser(user.data)
+      // this.setUser(user.data)
       return user.data;
     } catch (err) {
       return null
@@ -33,10 +33,10 @@ class AuthService extends BaseHttpService {
   }
   logOut = () => {
     this.removeAccessToken();
-    this.dispatch(this.setCurrentUser({}));
+    this.setUser({});
   }
 
-  setUser = (data: any) => {
+  setUser = (data?: any) => {
     this.dispatch(this.setCurrentUser(data));
   }
 

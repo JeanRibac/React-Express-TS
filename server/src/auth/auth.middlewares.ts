@@ -19,7 +19,7 @@ export class AuthMiddleware {
       const payload = jwt.verify(authorization, secret);
       res.locals.payload = payload
     } catch (err) {
-      return res.json({ err })
+      return res.status(401).json({ err })
     }
 
     return next();

@@ -7,11 +7,11 @@ export const Logged = (onLogout: (event: React.MouseEvent<HTMLButtonElement, Mou
       <h4>
         <b>Hey there,</b> {user.email}
         <p className="flow-text grey-text text-darken-1">
+          Postings: {user.postings}
+        </p>
+        <p className="flow-text grey-text text-darken-1">
           You are logged into a full-stack{" "}
           <span style={{ fontFamily: "monospace" }}>MERN</span> app 👏
-      </p>
-        <p className="flow-text grey-text text-darken-1">
-          {/* Postings: {user.postings} */}
         </p>
       </h4>
       <button
