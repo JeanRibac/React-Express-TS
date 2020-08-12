@@ -1,13 +1,9 @@
 import { GET_ERRORS } from "./auth.types";
+import { I_Action } from "../Interfaces";
 
 const initialState = {};
 
-interface Action {
-  payload?: any
-  type: string
-}
-
-export default function(state = initialState, action: Action) {
+export default function (state = initialState, action: I_Action) {
   switch (action.type) {
     case GET_ERRORS:
       return action.payload;

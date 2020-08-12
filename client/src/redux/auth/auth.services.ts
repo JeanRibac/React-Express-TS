@@ -2,31 +2,14 @@
 import BaseHttpService from '../services/http.service';
 import { SET_CURRENT_USER, USER_LOADING } from './auth.types';
 import jwt_decode from 'jwt-decode';
-// import store from '../store';
+import { I_RegisterData, I_LoginData, I_Decoded, I_ResponseData } from '../Interfaces';
 
-
-interface I_LoginData {
-  email: string,
-  password: string
-}
-interface I_RegisterData extends I_LoginData {
-  confirmedPassword: string
-}
-interface I_Decoded {
-  email: string
-}
-
-interface ResponseData {
-  data: {}
-}
 class AuthService extends BaseHttpService {
 
   register = async (userData: I_RegisterData) => {
     try {
       await this.post(`auth/register`, userData);
-    } catch (err) {
-      // dispatch(this.setErrors(err))
-    }
+    } catch (err) { }
   }
   login = async (loginData: I_LoginData) => {
     try {
@@ -36,17 +19,15 @@ class AuthService extends BaseHttpService {
       //@ts-ignore
       const decoded: I_Decoded = this.decodeToken(res.data.token);
       this.setUser(decoded.email);
-    } catch (err) {
-      // dispatch(this.setErrors(err))
-    }
+    } catch (err) { }
   }
   getUserDetails = async () => {
     try {
       //@ts-ignore
-      const user: ResponseData = await this.get(`auth/user-details`);
+      const user: I_ResponseData = await this.get(`auth/user-details`);
+      this.setUser(user.data)
       return user.data;
     } catch (err) {
-      // return dispatch(this.setErrors(err))
       return null
     }
   }
@@ -59,10 +40,10 @@ class AuthService extends BaseHttpService {
     this.dispatch(this.setCurrentUser(data));
   }
 
-  private setCurrentUser = (decoded: any) => {
+  private setCurrentUser = (data: any) => {
     return {
       type: SET_CURRENT_USER,
-      payload: decoded
+      payload: data
     };
   };
 

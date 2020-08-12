@@ -1,4 +1,4 @@
-import axios, { AxiosResponse } from 'axios';
+import axios from 'axios';
 import { GET_ERRORS } from '../auth/auth.types';
 import store from '../store';
 
@@ -11,7 +11,9 @@ export default class BaseHttpService {
     //add to the options object the auth token with the _getCommonOptions()
     Object.assign(options, this._getCommonOptions());
     return axios.get(`${this.BASE_URL}/${endpoint}`, options)
-      .catch(error => this._handleHttpError(error));
+      .catch(error => {
+        this._handleHttpError(error)
+      });
   }
 
   async post(endpoint: string, data = {}, options = {}) {
@@ -27,23 +29,21 @@ export default class BaseHttpService {
   async delete(endpoint: string, options = {}) {
     Object.assign(options, this._getCommonOptions());
     return axios.delete(`${this.BASE_URL}/${endpoint}`, options)
-      .catch(error => this._handleHttpError(error));
+      .catch(error => {
+        return this._handleHttpError(error)
+      });
   }
 
   async patch(endpoint: string, data = {}, options = {}) {
     Object.assign(options, this._getCommonOptions());
     return axios.patch(`${this.BASE_URL}/${endpoint}`, data, options)
-      .catch(error => this._handleHttpError(error));
+      .catch(error => {
+        return this._handleHttpError(error)
+      });
   }
 
   _handleHttpError(error: { response: { data: {}; }; }) {
     const { data } = error.response;
-    // 401 request has been made with wrong credentials
-    // if (status !== 401) {
-    //   this.setErrors(data)
-    // } else {
-    //   console.log(error)
-    // }
     return store.dispatch(this.setErrors(data))
   }
 
@@ -84,10 +84,10 @@ export default class BaseHttpService {
   setAuthToken = (token: string | null) => {
     if (token) {
       // Apply authorization token to every request if logged in
-      axios.defaults.headers.common["Authorization"] = token;
+      axios.defaults.headers.common["authorization"] = token;
     } else {
       // Delete auth header
-      delete axios.defaults.headers.common["Authorization"];
+      delete axios.defaults.headers.common["authorization"];
     }
   };
 

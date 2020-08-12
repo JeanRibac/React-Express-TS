@@ -1,18 +1,16 @@
 import React, { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
-import { logoutUser } from "src/redux/auth/auth.actions";
-import { useDispatch, useSelector } from "react-redux";
-import { State } from "src/redux/Interfaces";
-
+import { useSelector } from "react-redux";
+import { I_State } from "src/redux/Interfaces";
+import AuthService from "../../redux/auth/auth.services"
 
 function Navbar() {
-  const dispatch = useDispatch();
 
-  const isAuthenticated = useSelector((state: State) => state.auth.isAuthenticated)
+  const isAuthenticated = useSelector((state: I_State) => state.auth.isAuthenticated)
 
   const onLogoutClick = (e: SyntheticEvent) => {
     e.preventDefault();
-    dispatch(logoutUser());
+    AuthService.logOut();
   };
 
   return (

@@ -10,6 +10,7 @@ export class AuthMiddleware {
     Promise.resolve(fn(req, res, next)).catch(next);
 
   isLoggedIn = async (req: Request, res: Response, next: NextFunction) => {
+    //@ts-ignore
     const authorization: string | undefined = req.headers["authorization"];
     if (!authorization) {
       return res.status(400).json({ err: "Not authenticated" })
@@ -41,14 +42,12 @@ export class AuthMiddleware {
     const userValidation = new UserValidation()
     const { path } = req.route
     const { validateLoginInput, validateRegisterInput } = userValidation
-    console.log(path)
     if (path === "/login") {
       const { errors, isValid } = validateLoginInput(req.body)
       if (!isValid) {
         return res.status(400).json(errors)
       }
     } else if (path === "/register") {
-      console.log(req.body)
       const { errors, isValid } = validateRegisterInput(req.body)
       if (!isValid) {
         return res.status(400).json(errors)

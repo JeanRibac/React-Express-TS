@@ -4,17 +4,13 @@ import {
 } from "./auth.types";
 
 import isEmpty from "is-empty";
+import { I_Action } from "../Interfaces";
 
 const initialState = {
   isAuthenticated: false,
   user: {},
   loading: false
 };
-
-interface I_Action {
-  payload?: any
-  type?: string
-}
 
 export default function (state = initialState, action: I_Action) {
   switch (action.type) {

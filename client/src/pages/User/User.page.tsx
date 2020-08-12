@@ -29,7 +29,6 @@ const useStyles = makeStyles((theme) => ({
   },
 }));
 
-interface Props { }
 const userDetails = {
   Email: "email address",
   FullName: "Full Name",
