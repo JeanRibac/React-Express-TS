@@ -13,7 +13,6 @@ interface I_SignUpBody extends I_SinInBody {
 }
 
 export class AuthController {
-
     async Register(req: Request, res: Response): Promise<Response> {
         const { email, password }: I_SignUpBody = req.body;
         const foundUser: UserInterface | null = await User.findOne({ email });

@@ -11,9 +11,10 @@
   },
   "scripts": {
     "dev": "concurrently \"npm run dev --prefix server\" \"npm run start --prefix client\"",
-    "server": "cd server && npm i --save && npm start",
+    "server": "cd server && npm i --save && npm run build",
     "client": "cd client && npm install --save && npm run build",
-    "start": "npm i -g typescript && concurrently \"npm run client\" \"npm run server\""
+    "build": "concurrently \"npm run client\" \"npm run server\"",
+    "start": "npm start --prefix server"
   },
   "keywords": [],
   "author": "",

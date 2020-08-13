@@ -1,24 +1,24 @@
+
 import express, { Application, Request, Response, NextFunction } from "express";
-import mongoose, { connection } from "mongoose"
+import mongoose from "mongoose"
 import cookieParser from "cookie-parser";
 import cors from "cors";
+import chalk from "chalk";
 
 import { UserRoutes } from "./auth/auth.routes";
 // import { PostingRoutes } from "./posting/posting.routes"
 import path from "path";
 import { MONGODB_URI } from "./config/Constants";
 
-
-function loggerMiddleware(request: Request, _response: Response, next: NextFunction) {
-    console.log(new Date().toLocaleString() + '\x1b[36m', `${request.method} ${request.path}`, '\x1b[0m');
-    next();
+export function loggerMiddleware(request: Request, _response: Response, next: NextFunction) {
+    console.log(chalk.red(new Date().toLocaleString()) + '\x1b[36m', `${request.method} ${request.path}`, '\x1b[0m ');
+    next()
 }
-
+// const logger = new Logger();
 class Server {
     private app: Application;
     //@ts-ignore
     private port: number = process.env.PORT || 5001;
-
     constructor() {
         this.app = express();
         this.config();
@@ -31,11 +31,10 @@ class Server {
         this.app.use(express.static(path.join(__dirname, '../../client', 'build')));
         this.app.use(express.urlencoded({ extended: false }));
         this.app.use(express.json());
-        this.app.use(loggerMiddleware)
+        this.app.use(loggerMiddleware);
         this.app.use(cookieParser());
         this.app.use(cors());
     }
-
     private routes(): void {
         this.app.use("/api/auth", new UserRoutes().router);
         // this.app.use("/api/posting", new PostingRoutes().router);

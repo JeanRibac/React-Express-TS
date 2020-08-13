@@ -1,7 +1,7 @@
 import { Router } from 'express'
 import { AuthController } from "./auth.controllers"
 import { AuthMiddleware } from './auth.middlewares';
-
+// import { loggerMiddleware } from "../server"
 
 export class UserRoutes {
     public router: Router;
@@ -17,6 +17,7 @@ export class UserRoutes {
         const { isLoggedIn, validateInputs, uploadFiles, asyncErrorHandler } = this.authMiddleware;
         const { Login, Register, Upload, getUserDetails } = this.authController;
 
+        // this.router.use(loggerMiddleware)
         this.router.post("/login", validateInputs, asyncErrorHandler(Login));
         this.router.post("/register", validateInputs, asyncErrorHandler(Register));
         this.router.post("/upload", isLoggedIn, uploadFiles, Upload)

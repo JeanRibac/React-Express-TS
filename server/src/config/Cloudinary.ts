@@ -17,7 +17,7 @@ const storage = cloudinaryStorage({
         const buffer = crypto.randomBytes(16);
         const bufferToString = buffer.toString("hex");
         let uniqueFilename: string = file.originalname.replace(
-        /\.jpeg|\.jpg|\.png|\.gif/gi,"");
+            /\.jpeg|\.jpg|\.png|\.gif/gi, "");
         uniqueFilename += bufferToString;
         cb(undefined, uniqueFilename);
     },
