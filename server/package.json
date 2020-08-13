@@ -5,7 +5,7 @@
   "license": "MIT",
   "scripts": {
     "dev": "nodemon --exec ts-node src/server.ts",
-    "start": "npm run prestart && node dist/server.js",
+    "start": "node dist/server.js",
     "build": "tsc --project ./",
     "prestart": "npm run build"
   },
