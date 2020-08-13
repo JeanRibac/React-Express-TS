@@ -3,7 +3,7 @@ import { useDispatch, useSelector } from "react-redux";
 import AuthService from "src/redux/auth/auth.services";
 import { NotLogged } from "./NotLogged.component";
 import { Logged } from "./Logged.component";
-import { Props } from "src/redux/Interfaces";
+import { Props } from "../../redux/Interfaces";
 import { Link } from "react-router-dom";
 
 

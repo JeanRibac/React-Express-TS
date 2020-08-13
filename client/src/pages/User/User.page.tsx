@@ -4,7 +4,8 @@ import Avatar from "@material-ui/core/Avatar";
 import Grid from "@material-ui/core/Grid";
 import { deepOrange, deepPurple } from "@material-ui/core/colors";
 import { Typography, List, ListItem, ListItemText } from "@material-ui/core";
-import UserInfo from "src/components/UserInfo/UserInfo.component";
+import UserInfo from "../../components/UserInfo/UserInfo.component";
+import { Props } from "../../redux/Interfaces";
 
 const useStyles = makeStyles((theme) => ({
   root: {

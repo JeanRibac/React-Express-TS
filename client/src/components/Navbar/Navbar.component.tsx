@@ -1,7 +1,7 @@
 import React, { SyntheticEvent } from "react";
 import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
-import { I_State } from "src/redux/Interfaces";
+import { I_State } from "../../redux/Interfaces";
 import AuthService from "../../redux/auth/auth.services"
 
 function Navbar() {
