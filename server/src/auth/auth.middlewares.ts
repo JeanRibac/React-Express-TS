@@ -27,13 +27,12 @@ export class AuthMiddleware {
 
   uploadFiles = async (req: Request, res: Response, next: NextFunction) => {
     await upload.any()(req, res, (err: any) => {
-      const { files } = req;
-      if (!files) {
+      if (!req.files) {
         return res.status(400).json({ errorOnUpload: "The file failed to upload" })
       } else if (err) {
         return res.status(500).json({ error: err })
       }
-      res.locals.files = files;
+      res.locals.files = req.files;
       return next()
     })
   }
